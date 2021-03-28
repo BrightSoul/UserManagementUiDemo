@@ -39,6 +39,12 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (ViewData["ConfirmationMessage"] != null)
+            {
+            <div class="alert alert-success" role="alert">
+                @ViewData["ConfirmationMessage"]
+            </div>
+            }
             @RenderBody()
         </main>
     </div>

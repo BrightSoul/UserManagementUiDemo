@@ -1,0 +1,27 @@
+@model UserEditProfileInputModel
+<form method="post" asp-page-handler="ProfileEdit">
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input type="text" asp-for="FullName" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input type="email" asp-for="Email" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input type="password" asp-for="Password" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input type="password" asp-for="ConfirmPassword" class="form-control">
+    </div>
+    <div class="form-group">
+        <label asp-for="LockoutEnd"></label>
+        <input type="datetime-local" asp-for="LockoutEnd" class="form-control">
+    </div>
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Aggiorna</button>
+    </div>
+</form>

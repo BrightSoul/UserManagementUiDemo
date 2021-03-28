@@ -20,7 +20,7 @@ else
   @* Invitiamo a visitare la pagina di gestione utenti *@
   @if (User.HasClaim(ClaimTypes.Role, nameof(Role.Administrator)))
   {
-      <p><strong>Sei autenticato come amministratore</strong>, perciò puoi accedere alla pagina di <a asp-page="/Users/Index">gestione utenti</a>.</p>
+    <p><strong>Sei autenticato come amministratore</strong>, perciò puoi accedere alla pagina di <a asp-page="/Users/Index">gestione utenti</a>.</p>
   }
   else
   {

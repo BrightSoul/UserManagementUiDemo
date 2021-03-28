@@ -72,9 +72,29 @@ body {
 .input-validation-error {
   border-color: #dc3545!important;
 }
-form {
-  max-width: 400px;
-}
+
 td {
   vertical-align: middle!important;
+}
+.claim-type-full {
+  color: gray;
+  font-size: 0.75rem;
+  display: block;
+}
+.claim-type-short {
+  font-size: 1.1rem;
+  text-transform: capitalize;
+}
+.claim-type {
+  line-height: 110%;
+}
+legend, label {
+  font-weight: bold;
+}
+fieldset .row>div {
+  display: flex;
+  align-items: center;
+}
+fieldset hr:last-child {
+  margin-bottom: 0;
 }

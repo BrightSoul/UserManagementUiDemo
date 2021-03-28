@@ -26,8 +26,8 @@ namespace UserManagementUiDemo.Models.InputModels
         Display(Name = "Conferma password")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Blocca l'account fino al")]
-        public DateTime? LockoutEnd { get; set; }
+        [Display(Name = "Blocca l'account (non potrà fare il login) fino al")]
+        public DateTimeOffset? LockoutEnd { get; set; }
 
         public void CopyToApplicationUser(UserManager<ApplicationUser> userManager, ApplicationUser user)
         {
@@ -38,6 +38,16 @@ namespace UserManagementUiDemo.Models.InputModels
             {
                 user.PasswordHash = userManager.PasswordHasher.HashPassword(user, Password);
             }
+        }
+
+        public static UserEditProfileInputModel FromApplicationUser(ApplicationUser user)
+        {
+            return new UserEditProfileInputModel
+            {
+                FullName = user.FullName,
+                Email = user.Email,
+                LockoutEnd = user.LockoutEnd
+            };
         }
     }
 }

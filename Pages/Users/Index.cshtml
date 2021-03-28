@@ -1,13 +1,13 @@
 @page
 @model UserIndexModel
 <div class="row">
-    <div class="col-8"><h1>@ViewData["Title"] <a asp-page="/Users/Create" class="btn btn-outline-primary btn-sm">Crea nuovo</a></h1></div>
+    <div class="col-8"><h1>@ViewData["Title"] <a asp-page="/Users/Create" class="btn btn-outline-primary">Crea nuovo</a></h1></div>
     <div class="col-4 d-flex align-items-end justify-content-end">
         <form method="get">
         <div class="input-group mb-2">
-            <input type="search" class="form-control" placeholder="Cerca...">
+            <input type="search" name="search" class="form-control" placeholder="Cerca...">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button">Cerca</button>
+                <button class="btn btn-outline-secondary" type="submit">Cerca</button>
             </div>
         </div>
         </form>
@@ -25,7 +25,7 @@
             <td>@user.FullName</td>
             <td>@user.Email</td>
             <td>@(user.LockoutEnd.HasValue ? user.LockoutEnd.Value.ToString("'Fino a ' ddd dd/MM/yyyy HH.mm.ss") : "No")</td>
-            <td class="d-flex justify-content-end"><a asp-page="/Users/Edit" asp-route-id="@user.Id" class="btn btn-sm btn-outline-primary">Modifica</a></td>
+            <td class="d-flex justify-content-end"><a asp-page="/Users/Edit" asp-route-id="@user.Id" class="btn btn-outline-primary">Modifica</a></td>
         </tr>
         }
     </tbody>

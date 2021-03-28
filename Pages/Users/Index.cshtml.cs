@@ -23,11 +23,15 @@ namespace UserManagementUiDemo.Pages.Users
 
         public IList<ApplicationUser> Users { get; private set; }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string search)
         {
-            int userCount = await userManager.Users.CountAsync();
-            ViewData["Title"] = $"Elenco utenti ({userCount})";
-            Users = await userManager.Users.ToListAsync();
+            IQueryable<ApplicationUser> userQuery = userManager.Users;
+            if (search is not null and not "")
+            {
+                userQuery = userQuery.Where(user => user.FullName.Contains(search) || user.Email.Contains(search));
+            }
+            Users = await userQuery.ToListAsync();
+            ViewData["Title"] = $"Elenco utenti ({Users.Count})";
             return Page();
         }
     }
