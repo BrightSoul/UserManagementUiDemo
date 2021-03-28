@@ -32,7 +32,16 @@ namespace UserManagementUiDemo.Models.InputModels
             {
                 FullName = FullName,
                 Email = Email,
-                UserName = Email
+                UserName = Email,
+                // In questa demo, gli utenti creati dalle pagine di amministrazione
+                // si troveranno già con l'email confermata, così che possano subito
+                // fare il login
+                EmailConfirmed = true,
+                // L'account verrà bloccato automaticamente dopo un certo numero di 
+                // tentantivi di login falliti. Puoi configurare i parametri di Lockout
+                // (es. numero di tentantivi, durata del blocco) nella chiamata a
+                // AddDefaultIdentity che si trova nella classe Startup.
+                LockoutEnabled = true
             };
         }
     }

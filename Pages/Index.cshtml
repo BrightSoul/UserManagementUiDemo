@@ -1,10 +1,11 @@
 @page
 @model IndexModel
+<h1>@ViewData["Title"]</h1>
 
 @if (Model.Administrators.Count == 0)
 {
   <p>Nel database <strong>non esiste alcun amministratore</strong>. Crealo compilando il form qui sotto:</p>
-  <partial name="_UserCreateForm"></partial>
+  <partial name="_UserCreateForm" for="Input"></partial>
 }
 else
 {
@@ -19,10 +20,10 @@ else
   @* Invitiamo a visitare la pagina di gestione utenti *@
   @if (User.HasClaim(ClaimTypes.Role, nameof(Role.Administrator)))
   {
-      <p>Sei autenticato come amministratore, perciò puoi accedere alla pagina di <a asp-page="/Users">gestione utenti</a>.</p>
+      <p><strong>Sei autenticato come amministratore</strong>, perciò puoi accedere alla pagina di <a asp-page="/Users/Index">gestione utenti</a>.</p>
   }
   else
   {
-    <p>Al momento non hai il ruolo di amministratore ma puoi fare il <a asp-page="/Identity/Login">login</a> con uno degli account amministratore elencati qui per poter accedere alla pagina di <a asp-page="/Users">gestione utenti</a>.</p>
+    <p>Al momento non hai il ruolo di amministratore ma puoi fare il <a asp-area="Identity" asp-page="/Account/Login">login</a> con uno degli account amministratore elencati qui per poter accedere alla pagina di <a asp-page="/Users/Index">gestione utenti</a>.</p>
   }
 }

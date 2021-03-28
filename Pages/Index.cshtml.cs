@@ -13,9 +13,11 @@ namespace UserManagementUiDemo.Pages
 {
     public class IndexModel : PageModel
     {
-        public UserManager<ApplicationUser> userManager { get; }
-        public IndexModel(UserManager<ApplicationUser> userManager)
+        public readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
+        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
+            this.signInManager = signInManager;
             this.userManager = userManager;
         }
 
@@ -49,7 +51,7 @@ namespace UserManagementUiDemo.Pages
                     return await OnGetAsync();
                 }
 
-                // Ok, ora possiamo crearlo
+                // Creiamo l'utente
                 ApplicationUser user = Input.ToApplicationUser();
                 IdentityResult result = await userManager.CreateAsync(user, Input.Password);
                 if (!result.Succeeded)
@@ -58,7 +60,7 @@ namespace UserManagementUiDemo.Pages
                     return await OnGetAsync();
                 }
 
-                // Infine gli assegniamo il ruolo di amministratore
+                // Gli assegniamo il ruolo di amministratore
                 Claim administratorRoleClaim = CreateAdministratorRoleClaim();
                 result = await userManager.AddClaimAsync(user, administratorRoleClaim);
                 if (!result.Succeeded)
@@ -67,8 +69,11 @@ namespace UserManagementUiDemo.Pages
                     return await OnGetAsync();
                 }
 
+                // Emettiamo il cookie di autenticazione per l'utente, così che risulti già loggato
+                await signInManager.SignInAsync(user, false);
+
                 ViewData["ConfirmationMessage"] = "Hai creato il primo utente amministratore! Ora puoi gestire gli utenti";
-                return RedirectToPage("/Users");
+                return RedirectToPage("/Users/Index");
             }
 
             return await OnGetAsync();
@@ -78,12 +83,12 @@ namespace UserManagementUiDemo.Pages
         {
             Claim administratorRoleClaim = CreateAdministratorRoleClaim();
             IList<ApplicationUser> users = await userManager.GetUsersForClaimAsync(administratorRoleClaim);
-            return users.Select(user => user.UserName).ToList();
+            return users.Select(user => $"{user.FullName} ({user.Email})").ToList();
         }
 
         private Claim CreateAdministratorRoleClaim()
         {
-            return new (ClaimTypes.Role, nameof(Role.Administrator));
+            return new(ClaimTypes.Role, nameof(Role.Administrator));
         }
     }
 }
