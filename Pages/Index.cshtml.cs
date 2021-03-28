@@ -39,44 +39,44 @@ namespace UserManagementUiDemo.Pages
             // Nota: questa funzionalità esiste solo per agevolare la fruizione di questa demo
 
             // Il form è stato inviato, creiamo il primo amministratore 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // Ma solo se non esiste già un amministratore, altrimenti
-                // chiunque potrebbe crearne uno dato che questa pagina
-                // è accessibile anche da utenti anonimi
-                IList<string> administrators = await GetAdministrators();
-                if (administrators.Count > 0)
-                {
-                    ModelState.AddModelError("", "Nel database esiste già almeno un amministratore");
-                    return await OnGetAsync();
-                }
-
-                // Creiamo l'utente
-                ApplicationUser user = Input.ToApplicationUser();
-                IdentityResult result = await userManager.CreateAsync(user, Input.Password);
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", $"Non è stato possibile creare l'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
-                    return await OnGetAsync();
-                }
-
-                // Gli assegniamo il ruolo di amministratore
-                Claim administratorRoleClaim = CreateAdministratorRoleClaim();
-                result = await userManager.AddClaimAsync(user, administratorRoleClaim);
-                if (!result.Succeeded)
-                {
-                    ModelState.AddModelError("", $"Non è stato possibile creare l'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
-                    return await OnGetAsync();
-                }
-
-                // Emettiamo il cookie di autenticazione per l'utente, così che risulti già loggato
-                await signInManager.SignInAsync(user, false);
-
-                ViewData["ConfirmationMessage"] = "Hai creato il primo utente amministratore! Ora puoi gestire gli utenti";
-                return RedirectToPage("/Users/Index");
+                return await OnGetAsync();
             }
 
-            return await OnGetAsync();
+            // Ma solo se non esiste già un amministratore, altrimenti
+            // chiunque potrebbe crearne uno dato che questa pagina
+            // è accessibile anche da utenti anonimi
+            IList<string> administrators = await GetAdministrators();
+            if (administrators.Count > 0)
+            {
+                ModelState.AddModelError("", "Nel database esiste già almeno un amministratore");
+                return await OnGetAsync();
+            }
+
+            // Creiamo l'utente
+            ApplicationUser user = Input.ToApplicationUser(userManager);
+            IdentityResult result = await userManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", $"Non è stato possibile creare l'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
+                return await OnGetAsync();
+            }
+
+            // Gli assegniamo il ruolo di amministratore
+            Claim administratorRoleClaim = CreateAdministratorRoleClaim();
+            result = await userManager.AddClaimAsync(user, administratorRoleClaim);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", $"Non è stato possibile creare l'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
+                return await OnGetAsync();
+            }
+
+            // Emettiamo il cookie di autenticazione per l'utente, così che risulti già loggato
+            await signInManager.SignInAsync(user, false);
+
+            ViewData["ConfirmationMessage"] = "Hai creato il primo utente amministratore! Ora puoi gestire gli utenti";
+            return RedirectToPage("/Users/Index");
         }
 
         private async Task<IList<string>> GetAdministrators()

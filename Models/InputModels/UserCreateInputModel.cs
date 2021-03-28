@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using UserManagementUiDemo.Models.Entities;
 
 namespace UserManagementUiDemo.Models.InputModels
@@ -26,9 +27,9 @@ namespace UserManagementUiDemo.Models.InputModels
         Display(Name = "Conferma password")]
         public string ConfirmPassword { get; set; }
 
-        public ApplicationUser ToApplicationUser()
+        public ApplicationUser ToApplicationUser(UserManager<ApplicationUser> userManager)
         {
-            return new ApplicationUser
+            ApplicationUser user = new()
             {
                 FullName = FullName,
                 Email = Email,
@@ -43,6 +44,9 @@ namespace UserManagementUiDemo.Models.InputModels
                 // AddDefaultIdentity che si trova nella classe Startup.
                 LockoutEnabled = true
             };
+
+            user.PasswordHash = userManager.PasswordHasher.HashPassword(user, Password);
+            return user;
         }
     }
 }
