@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using UserManagementUiDemo.Models.Entities;
 
 namespace UserManagementUiDemo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -30,6 +20,21 @@ namespace UserManagementUiDemo.Data
                 .HasMany(user => user.UserClaims)
                 .WithOne()
                 .HasForeignKey(claim => claim.UserId);
+            builder
+                .Entity<ApplicationUser>()
+                .HasMany(user => user.Roles)
+                .WithMany(role => role.Users)
+                .UsingEntity<IdentityUserRole<string>>(
+                    builder => builder.HasOne<ApplicationRole>().WithMany().HasForeignKey(userRole => userRole.RoleId),
+                    builder => builder.HasOne<ApplicationUser>().WithMany().HasForeignKey(userRole => userRole.UserId),
+                    builder => builder.ToTable("AspNetUserRoles")   
+                );
+            builder
+                .Entity<ApplicationRole>()
+                .HasMany(role => role.RoleClaims)
+                .WithOne()
+                .HasForeignKey(claim => claim.RoleId);
+
         }
     }
 }

@@ -7,5 +7,6 @@ namespace UserManagementUiDemo.Models.Entities
     {
         public string FullName { get; set; }
         public ICollection<IdentityUserClaim<string>> UserClaims { get; set; }
+        public ICollection<ApplicationRole> Roles { get; set; }
     }
 }

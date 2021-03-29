@@ -15,7 +15,7 @@ using UserManagementUiDemo.Models.InputModels;
 
 namespace UserManagementUiDemo.Pages.Users
 {
-    [Authorize(Roles = nameof(Role.Administrator))]
+    [Authorize(Policy = nameof(Permission.UserManagement))]
     public class UserEditModel : PageModel
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -186,7 +186,7 @@ namespace UserManagementUiDemo.Pages.Users
 
         private IList<string> GetRoleNames()
         {
-            return Enum.GetNames<Role>().ToList();
+            return new List<string>();
         }
 
         private IDictionary<string, string> GetStandardClaimTypes()

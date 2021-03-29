@@ -1,7 +1,0 @@
-@page
-@model TestAdministratorOrPowerUserModel
-<h1>@ViewData["Title"]</h1>
-<p>Sei riuscito ad accedere a questa pagina riservata perché il tuo utente possiede
-   il ruolo <code>@Role.Administrator</code> o <code>@Role.PowerUser</code>.</p>
-<p>Il PageModel di questa Razor Page usa l'attributo <code>Authorize</code>
-   per consentire l'accesso solo agli utenti a cui è stato assegnato almeno uno di quei ruoli.</p>

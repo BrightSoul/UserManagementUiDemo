@@ -5,8 +5,8 @@ using UserManagementUiDemo.Models.Enums;
 
 namespace UserManagementUiDemo.Pages
 {
-    [Authorize(Roles = nameof(Role.PowerUser))]
-    public class TestPowerUserModel : PageModel
+    [Authorize(Policy = nameof(Permission.Operation1))]
+    public class Operation1Model : PageModel
     {
         public IActionResult OnGet()
         {

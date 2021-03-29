@@ -1,7 +1,7 @@
 @page
-@model TestPowerUserModel
+@model Operation3Model
 <h1>@ViewData["Title"]</h1>
 <p>Sei riuscito ad accedere a questa pagina riservata perché il tuo utente possiede
-   il ruolo <code>@Role.PowerUser</code>.</p>
+   il permesso <code>@Permission.Operation3</code>.</p>
 <p>Il PageModel di questa Razor Page usa l'attributo <code>Authorize</code>
-   per consentire l'accesso solo agli utenti a cui è stato assegnato quel ruolo.</p>
+   per consentire l'accesso solo agli utenti a cui è stato assegnato un ruolo associato a quel permesso.</p>

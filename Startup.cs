@@ -41,6 +41,8 @@ namespace UserManagementUiDemo
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.AllowedForNewUsers = true;
                     })
+                    .AddRoles<ApplicationRole>()
+                    .AddRoleManager<RoleManager<ApplicationRole>>()
                     .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();

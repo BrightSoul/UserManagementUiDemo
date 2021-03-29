@@ -11,7 +11,7 @@ using UserManagementUiDemo.Models.Enums;
 
 namespace UserManagementUiDemo.Pages.Users
 {
-    [Authorize(Roles = nameof(Role.Administrator))]
+    [Authorize(Policy = nameof(Permission.UserManagement))]
     public class UserIndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> userManager;
