@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UserManagementUiDemo.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
+using UserManagementUiDemo.Models.Authorization;
 
 namespace UserManagementUiDemo
 {
@@ -29,9 +31,10 @@ namespace UserManagementUiDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             services
                     .AddDefaultIdentity<ApplicationUser>(options => 

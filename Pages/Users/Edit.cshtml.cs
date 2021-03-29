@@ -30,7 +30,7 @@ namespace UserManagementUiDemo.Pages.Users
 
         public UserEditProfileInputModel UserProfile { get; private set; }
         public IList<Claim> UserClaims { get; private set; }
-        public IList<string> RoleNames => GetRoleNames();
+        public IList<string> Roles { get; private set; }
         public IDictionary<string, string> StandardClaimTypes => GetStandardClaimTypes();
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -41,6 +41,9 @@ namespace UserManagementUiDemo.Pages.Users
                 return RedirectToPage(IndexPage);
             }
             UserProfile = UserEditProfileInputModel.FromApplicationUser(user);
+
+            // Otteniamo i ruoli dell'utente
+            Roles = await userManager.GetRolesAsync(user);
 
             // Otteniamo anche i claim dell'uente
             UserClaims = await userManager.GetClaimsAsync(user);
@@ -89,12 +92,6 @@ namespace UserManagementUiDemo.Pages.Users
             }
 
             Claim claim = inputModel.ToClaim();
-            // Se stiamo aggiungendo il claim del ruolo, verifichiamo che il valore sia ammesso
-            if (claim.Type == ClaimTypes.Role && !RoleNames.Contains(claim.Value))
-            {
-                ModelState.AddModelError(nameof(UserClaims), $"Il claim del ruolo ammette solo i valori {string.Join(", ", RoleNames)}");
-                return await OnGetAsync(id);
-            }
 
             // Verifichiamo se questo nuovo claim era già presente nel database
             // Evitiamo duplicati
@@ -182,11 +179,6 @@ namespace UserManagementUiDemo.Pages.Users
             }
 
             await signInManager.SignInAsync(user, false);
-        }
-
-        private IList<string> GetRoleNames()
-        {
-            return new List<string>();
         }
 
         private IDictionary<string, string> GetStandardClaimTypes()

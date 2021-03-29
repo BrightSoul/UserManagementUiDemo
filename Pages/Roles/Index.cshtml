@@ -1,0 +1,18 @@
+@page
+@model RoleIndexModel
+<h1>@ViewData["Title"] <a asp-page="/Roles/Create" class="btn btn-outline-primary">Crea nuovo</a></h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Nome</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (ApplicationRole role in Model.Roles)
+        {
+        <tr>
+            <td>@role.Name</td>
+            <td class="d-flex justify-content-end"><a asp-page="/Roles/Edit" asp-route-id="@role.Id" class="btn btn-outline-primary">Modifica</a></td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -21,14 +21,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-page="/Users/Index">Gestisci utenti</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-page="/Roles/Index">Gestisci ruoli</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Verifica la tua autorizzazione</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/Test/Anonymous">Pagina pubblica</a>
                                 <a class="dropdown-item" href="/Test/Authenticated">Pagina riservata a utenti autenticati</a>
-                                <a class="dropdown-item" href="/Test/AdministratorOrPowerUser">Pagina riservata a utenti con ruolo PowerUser o Administrator</a>
-                                <a class="dropdown-item" href="/Test/PowerUser">Pagina riservata a utenti con ruolo PowerUser</a>
-                                <a class="dropdown-item" href="/Test/Administrator">Pagina riservata a utenti con ruolo Administrator</a>
+                                <a class="dropdown-item" href="/Test/Operation1">Pagina riservata a utenti con permesso Operation1</a>
+                                <a class="dropdown-item" href="/Test/Operation2">Pagina riservata a utenti con permesso Operation2</a>
+                                <a class="dropdown-item" href="/Test/Operation3">Pagina riservata a utenti con permesso Operation3</a>
+                                <a class="dropdown-item" href="/Test/UserManagement">Pagina riservata a utenti con permesso UserManagement</a>
                             </div>
                         </li>
                     </ul>

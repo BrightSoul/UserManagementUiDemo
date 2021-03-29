@@ -20,10 +20,13 @@
     <partial name="_UserEditForm" for="UserProfile"></partial>
 </fieldset>
 
+<fieldset class="mt-3">
+    <legend>Ruoli (@Model.Roles.Count)</legend>
+</fieldset>
 
 <fieldset class="mt-3">
     <legend>Claim assegnati all'utente (@Model.UserClaims.Count)</legend>
-    <p>Qui si possono assegnare all'utente sia i ruoli che altri tipi di claim standard. Il ruoli assegnabili in questa applicazione sono i seguenti: @string.Join(", ", Model.RoleNames).
+    <p>Qui si possono assegnare all'utente sia i ruoli che altri tipi di claim standard.
     <div class="row">
         <div class="col-7"><label asp-for="@inputModel.Type"></label></div>
         <div class="col-3"><label asp-for="@inputModel.Value"></label></div>
@@ -60,9 +63,8 @@
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
                 <select class="form-control" asp-for="@inputModel.Type">
-                    <option value="@ClaimTypes.Role">Role (@ClaimTypes.Role)</option>
-                    <optgroup label="Altri tipi di claim standard">
-                        @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes.Where(claimType => claimType.Key != ClaimTypes.Role))
+                    <optgroup label="Tipi di claim standard">
+                        @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes)
                         {
                         <option value="@claimType.Key">@claimType.Value (@claimType.Key)</option>
                         }

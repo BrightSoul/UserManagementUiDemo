@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,16 +13,15 @@ using UserManagementUiDemo.Models.InputModels;
 
 namespace UserManagementUiDemo.Pages
 {
+    [AllowAnonymous]
     public class IndexModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> signInManager;
         public readonly UserManager<ApplicationUser> userManager;
-        public readonly RoleManager<IdentityRole> roleManager;
-        public IndexModel(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
+        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
-            this.roleManager = roleManager;
         }
 
         public IList<string> Managers { get; private set; }
@@ -88,8 +88,11 @@ namespace UserManagementUiDemo.Pages
         private async Task<IList<string>> GetUsersWithManagementPermission()
         {
             Claim userManagementPermissionClaim = CreateUserManagementPermissionClaim();
-            // Estraiamo tutti gli utenti che hanno almeno un ruolo con il permesso di gestione utenti
-            IList<ApplicationUser> users = await userManager.Users.Where(user => user.Roles.Any(role => role.RoleClaims.Any(claim => claim.ClaimType == nameof(Permission) && claim.ClaimValue == nameof(Permission.UserManagement)))).ToListAsync();
+            // Estraiamo tutti gli utenti che hanno il permesso di gestione utenti
+            // Assegnato o all'utente o a uno dei loro ruoli
+            IList<ApplicationUser> users = await userManager.Users.Where(user =>
+                                                user.UserClaims.Any(claim => claim.ClaimType == nameof(Permission) && claim.ClaimValue == nameof(Permission.UserManagement)) ||
+                                                user.Roles.Any(role => role.RoleClaims.Any(claim => claim.ClaimType == nameof(Permission) && claim.ClaimValue == nameof(Permission.UserManagement)))).ToListAsync();
             return users.Select(user => $"{user.FullName} ({user.Email})").ToList();
         }
 
