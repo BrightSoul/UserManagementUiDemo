@@ -68,7 +68,7 @@ namespace UserManagementUiDemo.Pages
             result = await userManager.AddClaimAsync(user, administratorRoleClaim);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", $"Non è stato possibile creare l'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
+                ModelState.AddModelError("", $"Non è stato possibile assegnare il ruolo di amministratore all'utente. Motivo: {result.Errors.FirstOrDefault()?.Description}");
                 return await OnGetAsync();
             }
 
