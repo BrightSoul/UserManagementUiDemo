@@ -14,28 +14,29 @@
             <button type="submit" class="btn btn-danger">Elimina</button>
         </form>
     </div>
+    <div class="col-12"><a asp-page="/Users/Index"><small>&#8592; Torna all'elenco</small></a></div>
 </div>
-<fieldset class="mt-3">
+<fieldset id="profile" class="mt-5">
     <legend>Profilo</legend>
     <span asp-validation-for="UserProfile" class="text-danger"></span>
     <partial name="_UserEditForm" for="UserProfile"></partial>
     <span asp-validation-for="UserProfile" class="text-danger"></span>
 </fieldset>
 
-<fieldset class="mt-3">
+<fieldset id="roles" class="mt-5">
     <legend>Ruoli assegnati all'utente (@Model.UserRoles.Count)</legend>
     <div class="row">
         <div class="col-10"><label asp-for="@roleInputModel.Name"></label></div>
         <div class="col-2"></div>
     </div>
     <hr class="mt-0">
-    @foreach (ApplicationRole role in Model.UserRoles)
+    @foreach (string name in Model.UserRoles)
     {
-        <form method="post" asp-page-handler="RevokeRole">
+        <form method="post" asp-page-handler="RevokeRole" asp-fragment="roles">
             <div class="row">
                 <div class="col-10">
-                    @role.Name
-                    <input type="hidden" asp-for="@role.Name">
+                    @name
+                    <input type="hidden" name="Name" asp-for="@name">
                 </div>
                 <div class="col-2">
                     <button type="submit" class="btn btn-outline-danger btn-block">Revoca</button>
@@ -44,21 +45,34 @@
         </form>
         <hr>
     }
-    <form method="post" asp-page-handler="AssignRole">
-        <div class="row bg-light pt-2 pb-2">
-            <div class="col-10">
-                <select class="form-control" asp-for="@roleInputModel.Name">
+    <form method="post" asp-page-handler="AssignRole" asp-fragment="roles">
+            @if (Model.Roles.Count > 0)
+            {
+            <div class="row bg-light pt-2 pb-2">
+                <div class="col-10">
+                    <select class="form-control" asp-for="@roleInputModel.Name">
                     @foreach (ApplicationRole role in Model.Roles)
                     {
                     <option value="@role.Name">@role.Name</option>
                     }
-                </select>
-                <span asp-validation-for="@roleInputModel.Name" class="text-danger"></span>
+                    </select>
+                    <span asp-validation-for="@roleInputModel.Name" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-primary btn-block">Assegna</button>
+                </div>
             </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-outline-primary btn-block">Assegna</button>
+            }
+            else
+            {
+            <div class="row pt-2 pb-2">
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        Al momento non ci sono ruoli ma puoi <a asp-page="/Roles/Create">creare un nuovo ruolo</a>.
+                    </div>
+                </div>
             </div>
-        </div>
+            }
     </form>
     <div class="row">
         <div class="col-12">
@@ -67,7 +81,7 @@
     </div>
 </fieldset>
 
-<fieldset class="mt-3">
+<fieldset id="claims" class="mt-5">
     <legend>Claim assegnati all'utente (@Model.UserClaims.Count)</legend>
     <p>Qui si possono assegnare all'utente sia i ruoli che altri tipi di claim standard.
     <div class="row">
@@ -78,7 +92,7 @@
     <hr class="mt-0">
     @foreach (Claim claim in Model.UserClaims)
     {
-        <form method="post" asp-page-handler="RevokeClaim">
+        <form method="post" asp-page-handler="RevokeClaim" asp-fragment="claims">
             <div class="row">
                 <div class="col-7 claim-type">
                     @if(Model.StandardClaimTypes.ContainsKey(claim.Type))
@@ -102,7 +116,7 @@
         </form>
         <hr>
     }
-    <form method="post" asp-page-handler="AssignClaim">
+    <form method="post" asp-page-handler="AssignClaim" asp-fragment="claims">
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
                 <select class="form-control" asp-for="@claimInputModel.Type">

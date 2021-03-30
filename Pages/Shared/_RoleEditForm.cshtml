@@ -1,12 +1,12 @@
 @model RoleEditInfoInputModel
-<form method="post" asp-page-handler="InfoEdit">
+<form method="post" asp-page-handler="InfoEdit" asp-fragment="info">
     <div class="form-group">
         <label asp-for="Name"></label>
         <input type="text" asp-for="Name" class="form-control">
     </div>
     <div class="form-group">
         <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control" rows="6"></textarea>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Aggiorna</button>

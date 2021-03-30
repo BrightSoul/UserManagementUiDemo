@@ -1,5 +1,5 @@
 @model UserEditProfileInputModel
-<form method="post" asp-page-handler="ProfileEdit">
+<form method="post" asp-page-handler="ProfileEdit" asp-fragment="profile">
     <div class="form-group">
         <label asp-for="FullName"></label>
         <input type="text" asp-for="FullName" class="form-control">

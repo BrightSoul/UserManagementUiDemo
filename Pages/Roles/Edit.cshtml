@@ -13,15 +13,16 @@
             <button type="submit" class="btn btn-danger">Elimina</button>
         </form>
     </div>
+    <div class="col-12"><a asp-page="/Roles/Index"><small>&#8592; Torna all'elenco</small></a></div>
 </div>
-<fieldset class="mt-3">
+<fieldset id="info" class="mt-5">
     <legend>Informazioni</legend>
     <span asp-validation-for="RoleInfo" class="text-danger"></span>
     <partial name="_RoleEditForm" for="RoleInfo"></partial>
     <span asp-validation-for="RoleInfo" class="text-danger"></span>
 </fieldset>
 
-<fieldset class="mt-3">
+<fieldset id="claims" class="mt-5">
     <legend>Claim assegnati al ruolo (@Model.RoleClaims.Count)</legend>
     <p>Qui si possono assegnare al ruolo sia i permessi che altri tipi di claim standard. I permessi supportati sono: @string.Join(", ", Model.PermissionNames).
     <div class="row">
@@ -32,7 +33,7 @@
     <hr class="mt-0">
     @foreach (Claim claim in Model.RoleClaims)
     {
-        <form method="post" asp-page-handler="RevokeClaim">
+        <form method="post" asp-page-handler="RevokeClaim" asp-fragment="claims">
             <div class="row">
                 <div class="col-7 claim-type">
                     @if(Model.StandardClaimTypes.ContainsKey(claim.Type))
@@ -56,7 +57,7 @@
         </form>
         <hr>
     }
-    <form method="post" asp-page-handler="AssignClaim">
+    <form method="post" asp-page-handler="AssignClaim" asp-fragment="claims">
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
                 <select class="form-control" asp-for="@inputModel.Type">
