@@ -48,7 +48,7 @@ namespace UserManagementUiDemo.Pages.Users
             // Otteniamo anche i claim dell'uente
             UserClaims = await userManager.GetClaimsAsync(user);
 
-            ViewData["Title"] = user.FullName;
+            ViewData["Title"] = $"Utente {user.FullName}";
             return Page();
         }
 

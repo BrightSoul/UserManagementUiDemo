@@ -1,5 +1,5 @@
 @page "{id}"
-@model UserEditModel
+@model RoleEditModel
 @{
     // Usato con asp-for per la creazione di nuovi claim
     EditClaimInputModel inputModel = new();
@@ -15,26 +15,22 @@
     </div>
 </div>
 <fieldset class="mt-3">
-    <legend>Profilo</legend>
-    <span asp-validation-for="UserProfile" class="text-danger"></span>
-    <partial name="_UserEditForm" for="UserProfile"></partial>
-    <span asp-validation-for="UserProfile" class="text-danger"></span>
+    <legend>Informazioni</legend>
+    <span asp-validation-for="RoleInfo" class="text-danger"></span>
+    <partial name="_RoleEditForm" for="RoleInfo"></partial>
+    <span asp-validation-for="RoleInfo" class="text-danger"></span>
 </fieldset>
 
 <fieldset class="mt-3">
-    <legend>Ruoli (@Model.Roles.Count)</legend>
-</fieldset>
-
-<fieldset class="mt-3">
-    <legend>Claim assegnati all'utente (@Model.UserClaims.Count)</legend>
-    <p>Qui si possono assegnare all'utente sia i ruoli che altri tipi di claim standard.
+    <legend>Claim assegnati al ruolo (@Model.RoleClaims.Count)</legend>
+    <p>Qui si possono assegnare al ruolo sia i permessi che altri tipi di claim standard. I permessi supportati sono: @string.Join(", ", Model.PermissionNames).
     <div class="row">
         <div class="col-7"><label asp-for="@inputModel.Type"></label></div>
         <div class="col-3"><label asp-for="@inputModel.Value"></label></div>
         <div class="col-2"></div>
     </div>
     <hr class="mt-0">
-    @foreach (Claim claim in Model.UserClaims)
+    @foreach (Claim claim in Model.RoleClaims)
     {
         <form method="post" asp-page-handler="RevokeClaim">
             <div class="row">
@@ -64,6 +60,9 @@
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
                 <select class="form-control" asp-for="@inputModel.Type">
+                    <optgroup label="Permessi">
+                        <option value="@nameof(Permission)">@nameof(Permission)</option>
+                    </optgroup>
                     <optgroup label="Tipi di claim standard">
                         @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes)
                         {
@@ -84,7 +83,7 @@
     </form>
     <div class="row">
         <div class="col-12">
-        <span asp-validation-for="UserClaims" class="text-danger"></span>
+        <span asp-validation-for="RoleClaims" class="text-danger"></span>
         </div>
     </div>
 </fieldset>
