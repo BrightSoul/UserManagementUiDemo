@@ -78,7 +78,7 @@ namespace UserManagementUiDemo.Pages.Users
             return await OnGetAsync(id);
         }
 
-        public async Task<IActionResult> OnPostAssignClaimAsync(string id, UserEditClaimInputModel inputModel)
+        public async Task<IActionResult> OnPostAssignClaimAsync(string id, EditClaimInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {
@@ -116,8 +116,7 @@ namespace UserManagementUiDemo.Pages.Users
             return await OnGetAsync(id);
         }
 
-
-        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, [Bind(Prefix = "claim")] UserEditClaimInputModel inputModel)
+        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, [Bind(Prefix = "claim")] EditClaimInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {

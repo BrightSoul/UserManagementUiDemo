@@ -5,7 +5,7 @@ using UserManagementUiDemo.Models.Entities;
 
 namespace UserManagementUiDemo.Models.InputModels
 {
-    public class UserEditClaimInputModel
+    public class EditClaimInputModel
     {
 
         [Required(ErrorMessage = "Il claim type è obbligatorio"),

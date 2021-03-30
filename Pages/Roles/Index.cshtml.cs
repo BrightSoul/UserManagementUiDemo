@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using UserManagementUiDemo.Models.Entities;
 using UserManagementUiDemo.Models.Enums;
 
-namespace UserManagementUiDemo.Pages.Users
+namespace UserManagementUiDemo.Pages.Roles
 {
     [Authorize(Policy = nameof(Permission.UserManagement))]
     public class RoleIndexModel : PageModel

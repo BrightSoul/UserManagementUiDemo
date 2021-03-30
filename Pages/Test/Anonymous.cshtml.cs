@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace UserManagementUiDemo.Pages
+namespace UserManagementUiDemo.Pages.Test
 {
     [AllowAnonymous]
     public class TestAnonymousModel : PageModel
