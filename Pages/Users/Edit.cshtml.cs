@@ -89,7 +89,7 @@ namespace UserManagementUiDemo.Pages.Users
             }
 
             Claim claim = inputModel.ToClaim();
-            // Se stiamo aggiungendo il claim del ruolo, verifichiamo che il valore sia ammesso
+            // Se stiamo assegnando il claim del ruolo, verifichiamo che il valore sia ammesso
             if (claim.Type == ClaimTypes.Role && !RoleNames.Contains(claim.Value))
             {
                 ModelState.AddModelError(nameof(UserClaims), $"Il claim del ruolo ammette solo i valori {string.Join(", ", RoleNames)}");
@@ -108,14 +108,14 @@ namespace UserManagementUiDemo.Pages.Users
             IdentityResult result = await userManager.AddClaimAsync(user, claim);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(nameof(UserClaims), $"Non è stato possibile aggiungere il claim '{claim.Type}'. Motivo: {result.Errors.FirstOrDefault()?.Description}");
+                ModelState.AddModelError(nameof(UserClaims), $"Non è stato possibile assegnare il claim '{claim.Type}'. Motivo: {result.Errors.FirstOrDefault()?.Description}");
                 return await OnGetAsync(id);
             }
 
             // Se questo era il mio utente, ri-emetto il cookie di autenticazione
             await UpdateIdentityIfNeeded(user);
 
-            ViewData["ConfirmationMessage"] = $"Il claim '{claim.Type}' è stato aggiunto con il valore '{claim.Value}'";
+            ViewData["ConfirmationMessage"] = $"Il claim '{claim.Type}' è stato assegnato con il valore '{claim.Value}'";
             return await OnGetAsync(id);
         }
 
@@ -137,13 +137,13 @@ namespace UserManagementUiDemo.Pages.Users
             IdentityResult result = await userManager.RemoveClaimAsync(user, oldClaim);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(nameof(UserClaims), $"Non è stato possibile rimuovere il claim '{oldClaim.Type}'. Motivo: {result.Errors.FirstOrDefault()?.Description}");
+                ModelState.AddModelError(nameof(UserClaims), $"Non è stato possibile revocare il claim '{oldClaim.Type}'. Motivo: {result.Errors.FirstOrDefault()?.Description}");
             }
 
             // Se questo era il mio utente, ri-emetto il cookie di autenticazione
             await UpdateIdentityIfNeeded(user);
 
-            ViewData["ConfirmationMessage"] = $"Il claim '{oldClaim.Type}' con valore '{oldClaim.Value}' è stato rimosso";
+            ViewData["ConfirmationMessage"] = $"Il claim '{oldClaim.Type}' con valore '{oldClaim.Value}' è stato revocato";
             return await OnGetAsync(id);
         }
 
