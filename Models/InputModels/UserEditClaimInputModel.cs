@@ -19,7 +19,7 @@ namespace UserManagementUiDemo.Models.InputModels
 
         public Claim ToClaim()
         {
-            return new(Type, Value);
+            return new(Type, Value ?? string.Empty);
         }
     }
 }
