@@ -2,7 +2,8 @@
 @model UserEditModel
 @{
     // Usato con asp-for per la creazione di nuovi claim
-    EditClaimInputModel inputModel = new();
+    EditClaimInputModel claimInputModel = new();
+    EditRoleInputModel roleInputModel = new();
 }
 <div class="row">
     <div class="col-10">
@@ -22,15 +23,56 @@
 </fieldset>
 
 <fieldset class="mt-3">
-    <legend>Ruoli (@Model.Roles.Count)</legend>
+    <legend>Ruoli assegnati all'utente (@Model.UserRoles.Count)</legend>
+    <div class="row">
+        <div class="col-10"><label asp-for="@roleInputModel.Name"></label></div>
+        <div class="col-2"></div>
+    </div>
+    <hr class="mt-0">
+    @foreach (ApplicationRole role in Model.UserRoles)
+    {
+        <form method="post" asp-page-handler="RevokeRole">
+            <div class="row">
+                <div class="col-10">
+                    @role.Name
+                    <input type="hidden" asp-for="@role.Name">
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-danger btn-block">Revoca</button>
+                </div>
+            </div>
+        </form>
+        <hr>
+    }
+    <form method="post" asp-page-handler="AssignRole">
+        <div class="row bg-light pt-2 pb-2">
+            <div class="col-10">
+                <select class="form-control" asp-for="@roleInputModel.Name">
+                    @foreach (ApplicationRole role in Model.Roles)
+                    {
+                    <option value="@role.Name">@role.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="@roleInputModel.Name" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-outline-primary btn-block">Assegna</button>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-12">
+        <span asp-validation-for="UserRoles" class="text-danger"></span>
+        </div>
+    </div>
 </fieldset>
 
 <fieldset class="mt-3">
     <legend>Claim assegnati all'utente (@Model.UserClaims.Count)</legend>
     <p>Qui si possono assegnare all'utente sia i ruoli che altri tipi di claim standard.
     <div class="row">
-        <div class="col-7"><label asp-for="@inputModel.Type"></label></div>
-        <div class="col-3"><label asp-for="@inputModel.Value"></label></div>
+        <div class="col-7"><label asp-for="@claimInputModel.Type"></label></div>
+        <div class="col-3"><label asp-for="@claimInputModel.Value"></label></div>
         <div class="col-2"></div>
     </div>
     <hr class="mt-0">
@@ -63,7 +105,7 @@
     <form method="post" asp-page-handler="AssignClaim">
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
-                <select class="form-control" asp-for="@inputModel.Type">
+                <select class="form-control" asp-for="@claimInputModel.Type">
                     <optgroup label="Tipi di claim standard">
                         @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes)
                         {
@@ -71,11 +113,11 @@
                         }
                     </optgroup>
                 </select>
-                <span asp-validation-for="@inputModel.Type" class="text-danger"></span>
+                <span asp-validation-for="@claimInputModel.Type" class="text-danger"></span>
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" asp-for="@inputModel.Value">
-                <span asp-validation-for="@inputModel.Value" class="text-danger"></span>
+                <input type="text" class="form-control" asp-for="@claimInputModel.Value">
+                <span asp-validation-for="@claimInputModel.Value" class="text-danger"></span>
             </div>
             <div class="col-2">
                 <button type="submit" class="btn btn-outline-primary btn-block">Assegna</button>
