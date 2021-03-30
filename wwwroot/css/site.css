@@ -88,7 +88,7 @@ td {
 .claim-type {
   line-height: 110%;
 }
-legend, label {
+legend {
   font-weight: bold;
 }
 fieldset .row>div {
