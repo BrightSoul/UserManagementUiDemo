@@ -16,7 +16,7 @@ namespace UserManagementUiDemo.Models.Authorization
                 return Task.CompletedTask;
             }
 
-            var hasPermission = context.User.Claims.Any(claim => claim.Type == nameof(Permission) && claim.Value == requirement.Permission);
+            var hasPermission = context.User.HasClaim(nameof(Permission), requirement.Permission);
             if (hasPermission)
             {
                 context.Succeed(requirement);
