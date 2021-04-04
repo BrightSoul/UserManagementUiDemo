@@ -34,21 +34,14 @@
     @foreach (Claim claim in Model.UserClaims)
     {
         <form method="post" asp-page-handler="RevokeClaim" asp-fragment="claims">
-            <div class="row">
+            <div class="row list">
                 <div class="col-7 claim-type">
-                    @if(Model.StandardClaimTypes.ContainsKey(claim.Type))
-                    {
-                        <text>@Model.StandardClaimTypes[claim.Type] (@claim.Type)</text>
-                    }
-                    else
-                    {
-                        <text>@claim.Type</text>
-                    }
-                    <input type="hidden" asp-for="@claim.Type">
+                    @claim.Type
+                    <input type="hidden" name="Type" value="@claim.Type">
                 </div>
                 <div class="col-3">
                     @claim.Value
-                    <input type="hidden" asp-for="@claim.Value">
+                    <input type="hidden" name="Value" value="@claim.Value">
                 </div>
                 <div class="col-2">
                     <button type="submit" class="btn btn-outline-danger btn-block">Revoca</button>
@@ -60,19 +53,35 @@
     <form method="post" asp-page-handler="AssignClaim" asp-fragment="claims">
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
-                <select class="form-control" asp-for="@inputModel.Type">
-                    <option value="@ClaimTypes.Role">Role (@ClaimTypes.Role)</option>
-                    <optgroup label="Altri tipi di claim standard">
-                        @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes.Where(claimType => claimType.Key != ClaimTypes.Role))
-                        {
-                        <option value="@claimType.Key">@claimType.Value (@claimType.Key)</option>
-                        }
-                    </optgroup>
-                </select>
+                <div class="input-group">
+                    <input type="text" id="claim-type" asp-for="@inputModel.Type" class="form-control" placeholder="Digita un claim type o selezionalo dalla lista..." onchange="toggleRoleSelector(this.value)">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Seleziona</button>
+                        <div class="dropdown-menu selector" onclick="setValue(event, true);">
+                            <a class="dropdown-item" data-value="@ClaimTypes.Role">@nameof(ClaimTypes.Role)</a>
+                            <div role="separator" class="dropdown-divider"></div>
+                            @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes.Where(claimType => claimType.Key != ClaimTypes.Role))
+                            {
+                            <a class="dropdown-item" data-value="@claimType.Key">@claimType.Value</a>
+                            }
+                        </div>
+                    </div>
+                </div>
                 <span asp-validation-for="@inputModel.Type" class="text-danger"></span>
             </div>
             <div class="col-3">
-                <input type="text" class="form-control" asp-for="@inputModel.Value">
+                <div class="input-group">
+                    <input type="text" id="claim-value" asp-for="@inputModel.Value" class="form-control" placeholder="Claim value...">
+                    <div class="input-group-append">
+                        <button id="role-selector" class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Seleziona</button>
+                        <div class="dropdown-menu" onclick="setValue(event)">
+                            @foreach (string roleName in Enum.GetNames<Role>())
+                            {
+                            <a class="dropdown-item" data-value="@roleName">@roleName</a>
+                            }
+                        </div>
+                    </div>
+                </div>
                 <span asp-validation-for="@inputModel.Value" class="text-danger"></span>
             </div>
             <div class="col-2">
@@ -86,3 +95,27 @@
         </div>
     </div>
 </fieldset>
+@section Scripts
+{
+    <script>
+    function setValue(event, toggle) {
+        if (!event.target || !event.target.dataset.value) {
+            return;
+        }
+        $(event.target).closest('.input-group').find("input").val(event.target.dataset.value);
+        event.preventDefault();
+        if (toggle) {
+            toggleRoleSelector(event.target.dataset.value);
+        }
+    }
+    function toggleRoleSelector(value) {
+        var roleSelector = $('#role-selector');
+        if (value === '@ClaimTypes.Role') {
+            roleSelector.show();
+        } else {
+            roleSelector.hide();
+        }
+    }
+    toggleRoleSelector($('#claim-type').val());
+    </script>
+}

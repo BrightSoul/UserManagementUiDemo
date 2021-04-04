@@ -120,7 +120,7 @@ namespace UserManagementUiDemo.Pages.Users
         }
 
 
-        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, [Bind(Prefix = "claim")] UserEditClaimInputModel inputModel)
+        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, UserEditClaimInputModel inputModel)
         {
             if (!ModelState.IsValid)
             {
