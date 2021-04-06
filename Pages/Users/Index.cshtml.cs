@@ -22,13 +22,15 @@ namespace UserManagementUiDemo.Pages.Users
         }
 
         public IList<ApplicationUser> Users { get; private set; }
+        [BindProperty(SupportsGet = true)]
+        public string Search { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string search)
+        public async Task<IActionResult> OnGetAsync()
         {
             IQueryable<ApplicationUser> userQuery = userManager.Users;
-            if (search is not null and not "")
+            if (Search is not null and not "")
             {
-                userQuery = userQuery.Where(user => user.FullName.Contains(search) || user.Email.Contains(search));
+                userQuery = userQuery.Where(user => EF.Functions.Like(user.FullName, $"%{Search}%") || EF.Functions.Like(user.Email, $"%{Search}%"));
             }
             Users = await userQuery.ToListAsync();
             ViewData["Title"] = $"Elenco utenti ({Users.Count})";
