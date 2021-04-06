@@ -36,7 +36,7 @@
             <div class="row">
                 <div class="col-10">
                     @name
-                    <input type="hidden" name="Name" asp-for="@name">
+                    <input type="hidden" name="Name" value="@name">
                 </div>
                 <div class="col-2">
                     <button type="submit" class="btn btn-outline-danger btn-block">Revoca</button>
@@ -94,20 +94,13 @@
     {
         <form method="post" asp-page-handler="RevokeClaim" asp-fragment="claims">
             <div class="row">
-                <div class="col-7 claim-type">
-                    @if(Model.StandardClaimTypes.ContainsKey(claim.Type))
-                    {
-                        <text>@Model.StandardClaimTypes[claim.Type] (@claim.Type)</text>
-                    }
-                    else
-                    {
-                        <text>@claim.Type</text>
-                    }
-                    <input type="hidden" asp-for="@claim.Type">
+                <div class="col-7">
+                    @claim.Type
+                    <input type="hidden" name="Type" value="@claim.Type">
                 </div>
                 <div class="col-3">
                     @claim.Value
-                    <input type="hidden" asp-for="@claim.Value">
+                    <input type="hidden" name="Value" value="@claim.Value">
                 </div>
                 <div class="col-2">
                     <button type="submit" class="btn btn-outline-danger btn-block">Revoca</button>
@@ -119,14 +112,18 @@
     <form method="post" asp-page-handler="AssignClaim" asp-fragment="claims">
         <div class="row bg-light pt-2 pb-2">
             <div class="col-7">
-                <select class="form-control" asp-for="@claimInputModel.Type">
-                    <optgroup label="Tipi di claim standard">
-                        @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes)
-                        {
-                        <option value="@claimType.Key">@claimType.Value (@claimType.Key)</option>
-                        }
-                    </optgroup>
-                </select>
+                <div class="input-group">
+                    <input type="text" id="claim-type" asp-for="@claimInputModel.Type" class="form-control" placeholder="Digita un claim type o selezionalo dalla lista...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Seleziona</button>
+                        <div class="dropdown-menu selector" onclick="setValue(event, true);">
+                            @foreach (KeyValuePair<string, string> claimType in Model.StandardClaimTypes)
+                            {
+                            <a class="dropdown-item" data-value="@claimType.Key">@claimType.Value</a>
+                            }
+                            </div>
+                        </div>
+                </div>
                 <span asp-validation-for="@claimInputModel.Type" class="text-danger"></span>
             </div>
             <div class="col-3">
@@ -144,3 +141,15 @@
         </div>
     </div>
 </fieldset>
+@section Scripts
+{
+    <script>
+    function setValue(event) {
+        if (!event.target || !event.target.dataset.value) {
+            return;
+        }
+        $(event.target).closest('.input-group').find("input").val(event.target.dataset.value);
+        event.preventDefault();
+    }
+    </script>
+}

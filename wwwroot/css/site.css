@@ -98,3 +98,21 @@ fieldset .row>div {
 fieldset hr:last-child {
   margin-bottom: 0;
 }
+.dropdown-menu.selector {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+.dropdown-menu.selector a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-menu a {
+  cursor: default;
+}
+.dropdown-menu.selector a[data-value]::after {
+  content: attr(data-value);
+  color: gray;
+  font-size: 0.8rem;
+  margin-left: 10px;
+}

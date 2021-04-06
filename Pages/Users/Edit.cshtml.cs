@@ -128,7 +128,7 @@ namespace UserManagementUiDemo.Pages.Users
             return await OnGetAsync(id);
         }
 
-        public async Task<IActionResult> OnPostRevokeRoleAsync(string id, [Bind(Prefix = "role")] EditRoleInputModel roleInputModel)
+        public async Task<IActionResult> OnPostRevokeRoleAsync(string id, EditRoleInputModel roleInputModel)
         {
             if (!ModelState.IsValid)
             {
@@ -192,7 +192,7 @@ namespace UserManagementUiDemo.Pages.Users
             return await OnGetAsync(id);
         }
 
-        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, [Bind(Prefix = "claim")] EditClaimInputModel claimInputModel)
+        public async Task<IActionResult> OnPostRevokeClaimAsync(string id, EditClaimInputModel claimInputModel)
         {
             if (!ModelState.IsValid)
             {
