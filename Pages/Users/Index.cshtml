@@ -1,32 +1,48 @@
 @page
 @model UserIndexModel
 <div class="row">
-    <div class="col-8"><h1>@ViewData["Title"] <a asp-page="/Users/Create" class="btn btn-outline-primary">Crea nuovo</a></h1></div>
-    <div class="col-4 d-flex align-items-end justify-content-end">
+    <div class="col-6">
+        <h1>@ViewData["Title"] <a asp-page="/Users/Create" class="btn btn-outline-primary">Crea nuovo</a></h1>
+    </div>
+    <div class="col-6 d-flex align-items-end justify-content-end">
         <form method="get">
-        <div class="input-group mb-2">
-            <input type="search" asp-for="Search" class="form-control" placeholder="Cerca...">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+            <div class="input-group mb-2">
+                <div class="input-group">
+                    <select class="custom-select" asp-for="InRole" asp-items="@Html.GetEnumSelectList<Role>()">
+                        <option value="">In tutti i ruoli</option>
+                    </select>
+                    <div class="input-group-append">
+                        <input type="search" asp-for="Search" class="form-control" placeholder="Nome o email...">
+                    </div>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Cerca</button>
+                    </div>
+                </div>
             </div>
-        </div>
         </form>
     </div>
 </div>
 
 <table class="table table-striped">
     <thead>
-        <tr><th>Nome</th><th>Email</th><th>Bloccato</th><th></th></tr>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Bloccato</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
         @foreach (ApplicationUser user in Model.Users)
         {
-        <tr>
-            <td>@user.FullName</td>
-            <td>@user.Email</td>
-            <td>@(user.LockoutEnd.HasValue ? user.LockoutEnd.Value.ToString("'Fino a ' ddd dd/MM/yyyy HH.mm.ss") : "No")</td>
-            <td class="d-flex justify-content-end"><a asp-page="/Users/Edit" asp-route-id="@user.Id" class="btn btn-outline-primary">Modifica</a></td>
-        </tr>
+            <tr>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>@(user.LockoutEnd.HasValue ? user.LockoutEnd.Value.ToString("'Fino a ' ddd dd/MM/yyyy HH.mm.ss") : "No")
+                </td>
+                <td class="d-flex justify-content-end"><a asp-page="/Users/Edit" asp-route-id="@user.Id"
+                    class="btn btn-outline-primary">Modifica</a></td>
+            </tr>
         }
     </tbody>
     <tfoot>
