@@ -5,7 +5,12 @@
     <div class="col-4 d-flex align-items-end justify-content-end">
         <form method="get">
         <div class="input-group mb-2">
-            <input type="search" asp-for="Search" class="form-control" placeholder="Cerca...">
+            <select class="custom-select" asp-for="InRole" asp-items="@Model.Roles">
+                <option value="">In tutti i ruoli</option>
+            </select>
+            <div class="input-group-append">
+                <input type="search" asp-for="Search" class="form-control" placeholder="Nome o email...">
+            </div>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">Cerca</button>
             </div>
