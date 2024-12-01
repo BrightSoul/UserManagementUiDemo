@@ -1,7 +1,4 @@
-namespace UserManagementUiDemo.Models.ViewModels
-{
-    public class UserListViewModel
-    {
-        
-    }
-}
+namespace UserManagementUiDemo.Models.ViewModels;
+
+public class UserListViewModel
+{ }

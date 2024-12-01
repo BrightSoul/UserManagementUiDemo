@@ -1,10 +1,9 @@
-namespace UserManagementUiDemo.Models.Enums
+namespace UserManagementUiDemo.Models.Enums;
+
+public enum Permission
 {
-    public enum Permission
-    {
-        Operation1,
-        Operation2,
-        Operation3,
-        UserManagement
-    }
+    Operation1,
+    Operation2,
+    Operation3,
+    UserManagement
 }
